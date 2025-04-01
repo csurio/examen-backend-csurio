@@ -23,6 +23,7 @@ Este proyecto implementa una solución de prueba técnica para el manejo de cuen
 
 - Endpoint: `POST /api/v1/transactions/process`
 - Entrada:
+
 ```json
 {
   "clientId": 1,
@@ -30,6 +31,7 @@ Este proyecto implementa una solución de prueba técnica para el manejo de cuen
   "amount": 100.00
 }
 ```
+
 - Reglas:
   - Si el cliente no existe → error.
   - Si la cuenta no existe pero el cliente sí → se crea automáticamente.
@@ -37,6 +39,7 @@ Este proyecto implementa una solución de prueba técnica para el manejo de cuen
   - La transacción se registra siempre.
   - Se simula el envío de la transacción a una cola (RabbitMQ/Kafka).
 - Respuesta:
+
 ```json
 {
   "message": "Transaction received and is being processed",
@@ -77,9 +80,28 @@ com.assessment.bank
 
 ---
 
+## 🗄️ Esquema de base de datos
+
+El siguiente diagrama representa el modelo de base de datos utilizado en esta solución. Puedes encontrar la imagen dentro del repositorio en la carpeta `Documentacion`.
+
+
+
+Incluye las entidades:
+
+- `Client`
+- `Balance`
+- `BalanceTransaction`
+
+Y las relaciones entre ellas, tal como se definen en las entidades JPA.
+
+
+
+---
+
 ## 📃 Datos de prueba
 
 Se cargan automáticamente al iniciar la aplicación en ambiente de desarrollo mediante `DataInitializer`. Incluye:
+
 - 2 clientes:
   - Cliente 1: 1 cuenta (ACC123)
   - Cliente 2: 2 cuentas (ACC456, ACC789)
@@ -90,6 +112,7 @@ Se cargan automáticamente al iniciar la aplicación en ambiente de desarrollo m
 ## 📅 Documentación OpenAPI
 
 Disponible en:
+
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - JSON: `http://localhost:8080/api-docs`
 
@@ -140,6 +163,7 @@ El proyecto incluye una colección Postman para probar los endpoints de la API d
 **[examen-backend-carlosmonterrosa/Documentacion](examen-backend-carlosmonterrosa/Documentacion)**
 
 La colección contiene ejemplos para:
+
 - Acreditar/debitar a una cuenta
 - Consultar el historial de transacciones
 
