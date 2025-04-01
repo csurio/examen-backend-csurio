@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "fb266f7a-afa8-45b8-83f9-a71f533452a6",
+		"name": "PBS-Assestment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5829421"
+	},
+	"item": [
+		{
+			"name": "process-transaction",
+			"request": {
+				"method": "POST",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "client-history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions/history?clientId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions",
+						"history"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
