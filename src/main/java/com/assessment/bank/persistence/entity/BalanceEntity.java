@@ -38,7 +38,7 @@ public class BalanceEntity {
     private Long id;
 
     @Column(name = "CREATEDDATE", nullable = false)
-    private LocalDateTime createAdded;
+    private LocalDateTime createdDate;
 
     @Column(name = "ACCOUNT", length = 20, nullable = false)
     private String account;
