@@ -1,12 +1,16 @@
 package com.assessment.bank.persistence.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,29 +27,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "CLIENT")
-public class ClientEntity {
+@Table(name = "BALANCE_TRANSACTIONS")
+public class BalanceTransactionEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME", length = 50, nullable = false)
-    private String name;
+    @Column(name = "CREATEDDATE", nullable = false)
+    private LocalDateTime createdDate;
 
-    @Column(name = "LASTNAME", length = 50, nullable = false)
-    private String lastname;
+    @ManyToOne
+    @JoinColumn(name = "CLIENT", nullable = false)
+    private ClientEntity client;
 
-    @Column(name = "BIRTHDAY", nullable = false)
-    private LocalDate birthday;
+    @Column(name = "ACCOUNT", nullable = false)
+    private Long account;
 
-    @Column(name = "PHONE", length = 20)
-    private String phone;
-
-    @Column(name = "EMAIL", length = 50)
-    private String email;
-
-    @Column(name = "ADDRESS", length = 100)
-    private String address;
+    @Column(name = "AMOUNT", nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
 
 }
