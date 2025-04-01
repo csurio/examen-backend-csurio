@@ -94,7 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
 	                .orElseThrow(() -> new ResourceNotFoundException("Account not found for client"));
 
 	        balances     = List.of(balance);
-	        transactions = transactionRepository.findAllByClientIdAndAccountId(clientId, balance.getId());
+	        transactions = transactionRepository.findAllByClientIdAndAccount(clientId, balance.getId());
 	    }
 		else {
 	        balances = balanceRepository.findAllByClientId(clientId);

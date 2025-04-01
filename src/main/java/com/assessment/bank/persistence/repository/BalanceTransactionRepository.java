@@ -15,7 +15,7 @@ import com.assessment.bank.persistence.entity.BalanceTransactionEntity;
  */
 public interface BalanceTransactionRepository extends JpaRepository<BalanceTransactionEntity, Long> {
 
-	List<BalanceTransactionEntity> findAllByClientIdAndAccountId(Long clientId, Long accountId);
+	List<BalanceTransactionEntity> findAllByClientIdAndAccount(Long clientId, Long account);
 
 	@Query("  SELECT t "
 		   +"   FROM BalanceTransactionEntity t "
