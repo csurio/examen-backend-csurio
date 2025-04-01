@@ -22,8 +22,8 @@ spring:
       hibernate:
         '[format_sql]': true
     show-sql: false
-#  flyway:
-#    enabled: true
-#    table: flyway_schema_history_account
-#    locations: classpath:db/migration/ddl,classpath:db/migration/dml
-#    baseline-on-migrate: true
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
