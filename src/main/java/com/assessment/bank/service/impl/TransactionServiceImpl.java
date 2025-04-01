@@ -2,6 +2,7 @@ package com.assessment.bank.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +14,10 @@ import com.assessment.bank.persistence.entity.ClientEntity;
 import com.assessment.bank.persistence.repository.BalanceRepository;
 import com.assessment.bank.persistence.repository.BalanceTransactionRepository;
 import com.assessment.bank.persistence.repository.ClientRepository;
+import com.assessment.bank.presentation.dto.BalanceDto;
+import com.assessment.bank.presentation.dto.ClientDto;
 import com.assessment.bank.presentation.dto.TransactionCreateDto;
+import com.assessment.bank.presentation.dto.TransactionDto;
 import com.assessment.bank.presentation.dto.TransactionHistoryDto;
 import com.assessment.bank.presentation.dto.TransactionResponseDto;
 import com.assessment.bank.service.TransactionService;
@@ -73,10 +77,53 @@ public class TransactionServiceImpl implements TransactionService {
 
         return new TransactionResponseDto("Transaction received and is being processed", "00");
 	}
+	
 
 	@Override
-	public TransactionHistoryDto getHistory(Long clientId, String account) {
-		return null;
+	public TransactionHistoryDto getHistory(Long clientId, String accountNumber) {
+		log.info("Getting transaction history for client {} and account {}", clientId, accountNumber);
+		
+		ClientEntity client = clientRepository.findById(clientId)
+		        .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
+		
+		List<BalanceEntity>            balances;
+	    List<BalanceTransactionEntity> transactions;
+		
+		if (accountNumber != null && !accountNumber.isBlank()) {
+	        BalanceEntity balance = balanceRepository.findByAccountAndClientId(accountNumber, clientId)
+	                .orElseThrow(() -> new ResourceNotFoundException("Account not found for client"));
+
+	        balances     = List.of(balance);
+	        transactions = transactionRepository.findAllByClientIdAndAccountId(clientId, balance.getId());
+	    }
+		else {
+	        balances = balanceRepository.findAllByClientId(clientId);
+	        List<Long> accountIds = balances.stream()
+	                						.map(BalanceEntity::getId)
+	                						.toList();
+	        transactions = transactionRepository.findAllByClientIdAndAccountIds(clientId, accountIds);
+	    }
+		
+		List<BalanceDto>     balanceDtos     = balances.stream()
+	            								.map(b -> new BalanceDto(b.getAccount(), b.getBalance(), clientId))
+	            								.toList();
+		List<TransactionDto> transactionDtos = transactions.stream()
+	            								.map(t -> new TransactionDto(t.getId(), t.getCreatedDate(), t.getAccount(), t.getAmount()))
+	            								.toList();
+		ClientDto            clientDto       = ClientDto.builder()
+												.clientId(client.getId())
+												.name(client.getName())
+												.lastname(client.getLastname())
+												.email(client.getEmail())
+												.phone(client.getPhone())
+												.account(accountNumber)
+												.build();
+		
+		return TransactionHistoryDto.builder()
+				.client(clientDto)
+				.balances(balanceDtos)
+				.transactions(transactionDtos)
+				.build();
 	}
 
 }
