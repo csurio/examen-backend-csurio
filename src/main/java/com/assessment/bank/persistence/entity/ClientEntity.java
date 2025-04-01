@@ -1,12 +1,15 @@
 package com.assessment.bank.persistence.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,5 +50,11 @@ public class ClientEntity {
 
     @Column(name = "ADDRESS", length = 100)
     private String address;
+    
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+	private List<BalanceEntity> balances;
+
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+	private List<BalanceTransactionEntity> transactions;
 
 }
