@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
  * @version 1.0
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class BalanceDto {
 	private String     account;
 	private BigDecimal balance;
