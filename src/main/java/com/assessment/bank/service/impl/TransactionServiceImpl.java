@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.assessment.bank.common.exception.BadRequestException;
 import com.assessment.bank.common.exception.ResourceNotFoundException;
 import com.assessment.bank.persistence.entity.BalanceEntity;
 import com.assessment.bank.persistence.entity.BalanceTransactionEntity;
@@ -60,6 +61,11 @@ public class TransactionServiceImpl implements TransactionService {
 		
 		if(Optional.ofNullable(account.getId()).isPresent()) {
 			BigDecimal newBalance = account.getBalance().add(request.getAmount());
+			
+			if (request.getAmount().signum() < 0 && newBalance.compareTo(BigDecimal.ZERO) < 0) {
+	            throw new BadRequestException("Insufficient balance for debit transaction.");
+	        }
+			
 			account.setBalance(newBalance);
             balanceRepository.save(account);
 		}
