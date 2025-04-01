@@ -37,7 +37,7 @@ Este proyecto implementa una solución de prueba técnica para el manejo de cuen
   - Si la cuenta no existe pero el cliente sí → se crea automáticamente.
   - El campo `amount` puede ser positivo (acreditar) o negativo (debitar).
   - La transacción se registra siempre.
-  - Se simula el envío de la transacción a una cola (RabbitMQ/Kafka).
+  - Se simula el envío de la transacción a una cola (RabbitMQ/Kafka). **(TO DO PENDIG)**
 - Respuesta:
 
 ```json
@@ -190,5 +190,4 @@ Desarrollado por **Carlos M. Surio** como parte de una prueba técnica para eval
 
 ---
 
-🚀 Si deseas que se prepare el despliegue con Docker, Pruebas de Integración o se conecte a RabbitMQ real, no dudes en solicitarlo.
 
