@@ -1,5 +1,7 @@
 package com.assessment.bank.persistence.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.assessment.bank.persistence.entity.BalanceEntity;
@@ -10,5 +12,7 @@ import com.assessment.bank.persistence.entity.BalanceEntity;
  * @version 1.0
  */
 public interface BalanceRepository extends JpaRepository<BalanceEntity, Long> {
+	
+	Optional<BalanceEntity> findByAccountAndClientId(String account, Long clientId);
 
 }
