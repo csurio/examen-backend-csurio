@@ -67,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
 		BalanceTransactionEntity transaccion = BalanceTransactionEntity.builder()
                 .createdDate(LocalDateTime.now())
                 .amount(request.getAmount())
-                .account(Long.valueOf(request.getAccount()))
+                .account(account.getId())
                 .client(client)
                 .build();
         transactionRepository.save(transaccion);
