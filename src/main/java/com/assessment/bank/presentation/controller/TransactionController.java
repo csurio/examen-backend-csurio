@@ -14,6 +14,7 @@ import com.assessment.bank.presentation.dto.TransactionResponseDto;
 import com.assessment.bank.service.TransactionService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -31,7 +32,7 @@ public class TransactionController {
 	 private final TransactionService transactionService;
 	
 	@PostMapping("/process")
-    public ResponseEntity<TransactionResponseDto> postTransaction(@RequestBody TransactionCreateDto request) {
+    public ResponseEntity<TransactionResponseDto> postTransaction(@Valid @RequestBody TransactionCreateDto request) {
 		TransactionResponseDto response = transactionService.processTransaction(request);
         return ResponseEntity.ok(response);
     }
