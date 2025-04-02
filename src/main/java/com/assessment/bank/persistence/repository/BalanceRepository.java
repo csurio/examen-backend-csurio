@@ -16,5 +16,6 @@ public interface BalanceRepository extends JpaRepository<BalanceEntity, Long> {
 	
 	Optional<BalanceEntity> findByAccountAndClientId(String account, Long clientId);
 	List<BalanceEntity> findAllByClientId(Long clientId);
+	Optional<BalanceEntity> findByAccount(String account);
 	
 }
