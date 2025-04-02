@@ -3,7 +3,6 @@ package com.assessment.bank.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,7 @@ import com.assessment.bank.presentation.dto.TransactionHistoryDto;
 import com.assessment.bank.presentation.dto.TransactionResponseDto;
 import com.assessment.bank.service.TransactionService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,35 +40,36 @@ public class TransactionServiceImpl implements TransactionService {
 	private final BalanceRepository            balanceRepository;
 	private final BalanceTransactionRepository transactionRepository;
 
-	@Override
+	@Transactional
 	public TransactionResponseDto processTransaction(TransactionCreateDto request) {
 		log.info("Transaction received for client {} acount {}", request.getClientId(), request.getAccount());
 		
 		ClientEntity client = clientRepository.findById(request.getClientId())
 	            .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 		
-		BalanceEntity account = balanceRepository.findByAccountAndClientId(request.getAccount(), client.getId())
-	            .orElseGet(() -> {
+	    BalanceEntity account = balanceRepository.findByAccount(request.getAccount())
+	    		.orElseGet(() -> {
 	                log.warn("Account {} does not exist. It will be create automatically.", request.getAccount());
 	                BalanceEntity accountToCreate = BalanceEntity.builder()
 	                        .account(request.getAccount())
-	                        .balance(request.getAmount())
+	                        .balance(BigDecimal.ZERO)
 	                        .createdDate(LocalDateTime.now())
 	                        .client(client)
 	                        .build();
 	                return balanceRepository.save(accountToCreate);
 	            });
-		
-		if(Optional.ofNullable(account.getId()).isPresent()) {
-			BigDecimal newBalance = account.getBalance().add(request.getAmount());
-			
-			if (request.getAmount().signum() < 0 && newBalance.compareTo(BigDecimal.ZERO) < 0) {
-	            throw new BadRequestException("Insufficient balance for debit transaction.");
-	        }
-			
-			account.setBalance(newBalance);
-            balanceRepository.save(account);
-		}
+	    
+	    if(!account.getClient().getId().equals(client.getId())) {
+	    	throw new BadRequestException("Account number already exists and is assigned to another client.");
+	    }
+	    
+	    BigDecimal newBalance = account.getBalance().add(request.getAmount());
+		if (request.getAmount().signum() < 0 && newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new BadRequestException("Insufficient balance for debit transaction.");
+        }
+	    
+		account.setBalance(newBalance);
+        balanceRepository.save(account);
 		
 		BalanceTransactionEntity transaccion = BalanceTransactionEntity.builder()
                 .createdDate(LocalDateTime.now())
