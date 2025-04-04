@@ -65,17 +65,25 @@ Este proyecto implementa una solución de prueba técnica para el manejo de cuen
 
 ```
 com.assessment.bank
-├── config                  # Configuración inicial y carga de datos
-├── controller              # Controladores REST
-├── dto                    # Clases DTO para entrada/salida
-├── exception              # Manejo de errores y excepciones personalizadas
-├── persistence
-│   ├── entity              # Entidades JPA
-│   └── repository          # Interfaces de repositorio
-├── service
-│   ├── impl                # Implementaciones de servicios
-│   └── TransactionService  # Interface de servicio principal
-└── BankApplication.java    # Clase principal
+├── common
+│   ├── constants                # Constantes utilizadas en la app
+│   └── exception                # Excepciones personalizadas
+│   └── utils                    # Clases utilitarias
+├── config                       # Configuración inicial y carga de datos
+├── messaging                  
+│   ├── dto                      # Clases Dto para envio de evenos
+│   └── service                  # Servicis para envio de mensajes Kafka
+├── persistence                  
+│   ├── entity                   # Entidades JPA
+│   └── repository               # Interfaces de repositorio
+├── presentation                 
+│   ├── advice                   # Manejador de excepciones centralizado
+│   └── controller               # Controladores REST
+│   └── dto                      # Clases DTO para entrada/salida
+├── service                      
+│   ├── impl                     # Implementaciones de servicios
+│   └── TransactionService       # Interface de servicio principal
+└── BankServiceApplication.java  # Clase principal
 ```
 
 ---
